@@ -12,14 +12,10 @@ async function get_post_count(req, res) {
 }
 
 async function get_all_post(req, res) {
-    const { username } = req.params;
+    const { username, offset } = req.params;
 
     try {
-        //const post = await PostModel.find({ username }).sort({ createdAt: -1 });
-        const post = await PostModel.find({ username })
-            .sort({ createdAt: -1 }) // Sort by createdAt in descending order
-            .skip(1) // Skip the first 9 posts
-            .limit(2);
+        const post = await PostModel.find({ username }).sort({ createdAt: -1 }).skip(offset).limit(100);
         res.status(200).json(post);
     } catch (error) {
         res.status(400).json({ error: error.message });
